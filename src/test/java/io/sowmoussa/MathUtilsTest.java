@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class MathUtilsTest {
 
     MathUtils mathUtils;
+    TestInfo testInfo;
+    TestReporter testReporter;
 
     @BeforeAll
     void init() {
@@ -19,7 +21,9 @@ class MathUtilsTest {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp(TestInfo testInfo, TestReporter testReporter) {
+        this.testInfo = testInfo;
+        this.testReporter = testReporter;
         mathUtils = new MathUtils();
     }
 
@@ -69,6 +73,7 @@ class MathUtilsTest {
     @EnabledOnOs(OS.MAC)
     @Tag("Math")
     void testDivide() {
+        testReporter.publishEntry("Running " + testInfo.getDisplayName() + " with tags "+testInfo.getTags());
         boolean isServerUp = Boolean.FALSE;
         assumeTrue(!isServerUp);
         assertThrows(
@@ -85,6 +90,7 @@ class MathUtilsTest {
     @DisplayName("Multiply method")
     @Tag("Math")
     void testMultiply() {
+        System.out.println("Running " + testInfo.getDisplayName() + " with tags "+testInfo.getTags());
         assertAll(
                 () -> assertEquals(4, mathUtils.multiply(2,2), "should return 4"),
                 () -> assertEquals(0, mathUtils.multiply(2,0), "should return 0"),
